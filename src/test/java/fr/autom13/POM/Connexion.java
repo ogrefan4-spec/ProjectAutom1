@@ -24,6 +24,14 @@ public class Connexion {
     @FindBy (id = "connectionButton")
     private WebElement btnConnection;
 
+    @FindBy (id = "messageLabel")
+    private WebElement msgConnexion;
+
+    /***
+     * Constucteur paramétré de la classe Connexion
+     * @param driver correspond au webdriver
+     * @param wait correspond à l'attente explicite
+     */
     public Connexion(WebDriver driver, WebDriverWait wait) {
         this.driver = driver;
         this.wait = wait;
@@ -31,11 +39,34 @@ public class Connexion {
         wait.until(ExpectedConditions.visibilityOf(vueConnexion));
     }
 
+    /***
+     * Méthode permettant de contrôler la visibilité du formulaire.
+     * @return un booléen indiquant si le formulaire de connexion est visible
+     */
     public boolean estAffichee() {
         return vueConnexion.isDisplayed();
     }
 
-    /**
+    /***
+     * Méthode permettant de contrôler la visibilité du message de connexion
+     * @return un booléen indiquant si le message de connexion est visible.
+     */
+    public boolean messageConnexionEstAffiche(){return msgConnexion.isDisplayed();}
+
+    /***
+     * Méthode permettant de récupérer le WebElement du message de connexion.
+     * Permet par exemple d'effectuer une attente explicite sur sa visibilité depuis l'extérieur
+     * @return le WebElement contenant le message de connexion
+     */
+    public WebElement getMessageConnexion(){return msgConnexion;}
+
+    /***
+     * Méthode permettant de contrôler le contenu du message de connexion
+     * @return le String correspondant au message affiché
+     */
+    public String getMessageErreur(){return msgConnexion.getText();}
+
+    /***
      * Se connecte avec les identifiants fournis.
      * Retourne le TableauDeBordPage si la connexion réussit.
      */
@@ -48,7 +79,7 @@ public class Connexion {
         return new Accueil(driver, wait);
     }
 
-    /**
+    /***
      * Tente une connexion avec des identifiants invalides.
      * Reste sur la LoginPage (pas de redirection).
      */
