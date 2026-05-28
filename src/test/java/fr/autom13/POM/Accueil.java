@@ -46,4 +46,9 @@ public class Accueil {
         REGISTER.click();
         return new Inscription(driver, wait);
     }
+
+    public Membre goToJardenner() {
+        MEMBERS.click();
+        return new Membre(driver, wait);
+    }
 }
