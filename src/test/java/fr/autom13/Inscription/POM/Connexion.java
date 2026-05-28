@@ -1,4 +1,4 @@
-package fr.autom13.POM;
+package fr.autom13.Inscription.POM;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -18,7 +18,7 @@ public class Connexion {
     @FindBy(id = "passwordInput")
     private WebElement PSW;
 
-    @FindBy(xpath = "/html/body/article/div[1]/div/h2")
+    @FindBy(css = "nav .active")
     private WebElement CONN;
 
     @FindBy(id = "connectionButton")
@@ -32,11 +32,18 @@ public class Connexion {
         wait.until(ExpectedConditions.visibilityOf(CONN));
     }
 
-    public Connexion inputUserandPass(String user, String psw) {
+    public Connexion inputUserAndPass(String user, String psw) {
+        wait.until(ExpectedConditions.elementToBeClickable(USER));
         USER.clear();
         USER.sendKeys(user);
+        wait.until(driver ->
+                USER.getAttribute("value").equals(user));
+
+        wait.until(ExpectedConditions.elementToBeClickable(PSW));
         PSW.clear();
         PSW.sendKeys(psw);
+        wait.until(driver ->
+                PSW.getAttribute("value").equals(psw));
         return this;
     }
 
@@ -44,6 +51,5 @@ public class Connexion {
         SUBMIT.click();
         return new Accueil(driver, wait);
     }
-
 
 }

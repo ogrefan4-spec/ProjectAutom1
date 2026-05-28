@@ -1,4 +1,4 @@
-package fr.autom13.POM;
+package fr.autom13.Inscription.POM;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,22 +11,22 @@ public class Accueil {
     private final WebDriver driver;
     private final WebDriverWait wait;
 
-    @FindBy(linkText = "login.php")
+    @FindBy(linkText = "Connexion")
     private WebElement CONN;
 
-    @FindBy(linkText = "registration.html")
+    @FindBy(linkText = "Inscription")
     private WebElement REGISTER;
 
     @FindBy(id = "informations")
     private WebElement ACCUEIL;
 
-    @FindBy(linkText = "task.html")
+    @FindBy(linkText = "Tâches")
     private WebElement TASK;
 
-    @FindBy(linkText = "plots.html")
+    @FindBy(linkText = "Parcelles")
     private WebElement PLOTS;
 
-    @FindBy(linkText = "jardeneers.html")
+    @FindBy(linkText = "Membres")
     private WebElement MEMBERS;
 
 
