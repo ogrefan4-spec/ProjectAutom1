@@ -11,30 +11,38 @@ public class Accueil {
     private final WebDriver driver;
     private final WebDriverWait wait;
 
-    @FindBy(linkText = "login.php")
+    @FindBy(xpath = "//a[@href='connection.html']")
     private WebElement CONN;
 
-    @FindBy(linkText = "registration.html")
+    @FindBy(xpath = "//a[@href='registration.html']")
     private WebElement REGISTER;
 
     @FindBy(id = "informations")
-    private WebElement ACCUEIL;
+    private WebElement INFORMATION;
 
-    @FindBy(linkText = "task.html")
+    @FindBy(xpath = "//a[@href='task.html']")
     private WebElement TASK;
 
-    @FindBy(linkText = "plots.html")
+    @FindBy(id = "plots")
     private WebElement PLOTS;
 
-    @FindBy(linkText = "jardeneers.html")
+    @FindBy(xpath = "//a[@href='jardeneers.html']")
     private WebElement MEMBERS;
 
+    @FindBy(id = "unstaffedImminentTasks")
+    private WebElement unstaffedImminentTasks;
+
+    @FindBy(id = "unstaffedTasks")
+    private WebElement unstaffedTasks;
+
+//    @FindBy(className = "row d-flex align-items-center")
+//    private WebElement presentationAssociation;
 
     public Accueil(WebDriver driver, WebDriverWait wait) {
         this.driver = driver;
         this.wait = wait;
         PageFactory.initElements(driver, this);
-        wait.until(ExpectedConditions.visibilityOf(ACCUEIL));
+        wait.until(ExpectedConditions.visibilityOf(INFORMATION));
     }
 
     public Connexion goToConnexion() {
@@ -51,4 +59,11 @@ public class Accueil {
         MEMBERS.click();
         return new Membre(driver, wait);
     }
+
+    public boolean informationIsDisplayed() {return INFORMATION.isDisplayed();}
+    public boolean unstaffedTasksIsDisplayed() {return unstaffedTasks.isDisplayed();}
+    public boolean unstaffedImminentTasksIsDisplayed() {return unstaffedImminentTasks.isDisplayed();}
+//    public boolean presentationAssociationIsDisplayed() {return presentationAssociation.isDisplayed();}
+    public boolean plotIsDisplayed() {return PLOTS.isDisplayed();}
+
 }
