@@ -14,19 +14,19 @@ public class Accueil {
     @FindBy(linkText = "login.php")
     private WebElement CONN;
 
-    @FindBy(name = "registration.html")
+    @FindBy(linkText = "registration.html")
     private WebElement REGISTER;
 
     @FindBy(id = "informations")
     private WebElement ACCUEIL;
 
-    @FindBy(id = "task.html")
+    @FindBy(linkText = "task.html")
     private WebElement TASK;
 
-    @FindBy(id = "plots.html")
+    @FindBy(linkText = "plots.html")
     private WebElement PLOTS;
 
-    @FindBy(id = "jardeneers.html")
+    @FindBy(linkText = "jardeneers.html")
     private WebElement MEMBERS;
 
 
@@ -47,7 +47,7 @@ public class Accueil {
         return new Inscription(driver, wait);
     }
 
-    public Membre goToJardenner() {
+    public Membre goToJardenners() {
         MEMBERS.click();
         return new Membre(driver, wait);
     }
