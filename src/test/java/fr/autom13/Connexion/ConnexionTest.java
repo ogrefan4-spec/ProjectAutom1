@@ -87,8 +87,8 @@ public class ConnexionTest {
         Connexion connexionPage = goToConnexion();
         Accueil accueilPage = connexionPage.seConnecter(loginAdmin, passwordAdmin);
 
-        wait.until(ExpectedConditions.visibilityOf(accueilPage.vueAcceuil));
-        assertTrue(accueilPage.estAffichee);
+        wait.until(ExpectedConditions.visibilityOf(accueilPage.vueAccueil));
+        assertTrue(accueilPage.estAffichee());
 
         // Déconnexion après authentification réussie
     }
@@ -106,8 +106,8 @@ public class ConnexionTest {
         Connexion connexionPage = goToConnexion();
         Accueil accueilPage = connexionPage.seConnecter(loginJardeener, passwordJardeener);
 
-        wait.until(ExpectedConditions.visibilityOf(accueilPage.vueAcceuil));
-        assertTrue(accueilPage.estAffichee);
+        wait.until(ExpectedConditions.visibilityOf(accueilPage.vueAccueil));
+        assertTrue(accueilPage.estAffichee());
 
         // Déconnexion après authentification réussie
     }
@@ -125,8 +125,8 @@ public class ConnexionTest {
         Connexion connexionPage = goToConnexion();
         Accueil accueilPage = connexionPage.seConnecter(loginOwner, passwordOwner);
 
-        wait.until(ExpectedConditions.visibilityOf(accueilPage.vueAcceuil));
-        assertTrue(accueilPage.estAffichee);
+        wait.until(ExpectedConditions.visibilityOf(accueilPage.vueAccueil));
+        assertTrue(accueilPage.estAffichee());
 
         // Déconnexion après authentification réussie
     }

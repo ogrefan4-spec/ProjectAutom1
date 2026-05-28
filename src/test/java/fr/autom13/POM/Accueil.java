@@ -35,8 +35,7 @@ public class Accueil {
     @FindBy(id = "unstaffedTasks")
     private WebElement unstaffedTasks;
 
-//    @FindBy(className = "row d-flex align-items-center")
-//    private WebElement presentationAssociation;
+    public WebElement vueAccueil = INFORMATION;
 
     public Accueil(WebDriver driver, WebDriverWait wait) {
         this.driver = driver;
@@ -60,6 +59,7 @@ public class Accueil {
         return new Membre(driver, wait);
     }
 
+    public boolean estAffichee() {return vueAccueil.isDisplayed();}
     public boolean informationIsDisplayed() {return INFORMATION.isDisplayed();}
     public boolean unstaffedTasksIsDisplayed() {return unstaffedTasks.isDisplayed();}
     public boolean unstaffedImminentTasksIsDisplayed() {return unstaffedImminentTasks.isDisplayed();}
