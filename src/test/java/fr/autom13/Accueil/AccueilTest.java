@@ -64,7 +64,8 @@ public class AccueilTest extends BaseTest {
     public void testUnstaffedTasksDisplayed_Admin() {
         Accueil accueilPage = new Accueil(driver, wait);
         Connexion connexionPage = accueilPage.goToConnexion();
-        accueilPage = connexionPage.seConnecter("admin", "admin");
+        connexionPage.inputAdmin();
+        accueilPage = connexionPage.pressConnexionButton();
         assertTrue(accueilPage.unstaffedTasksIsDisplayed());
     }
 

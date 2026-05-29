@@ -1,5 +1,4 @@
 package fr.autom13.Inscription.POM;
-import fr.autom13.Inscription.UtilsConn;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -19,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 
 import static fr.autom13.Inscription.UtilsConn.cellValue;
 import static fr.autom13.Inscription.UtilsConn.clearAndType;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Inscription {
     private final WebDriver driver;
@@ -160,6 +160,45 @@ public class Inscription {
         return SUCCESS_MESSAGE;
     }
 
+    public Accueil fullInputRegistrationAndSubmit(String login, String password, String firstName,
+                                                  String lastName, String gender, String birthDate,
+                                                  String address, String city, String cp,
+                                                  String tel, String mail, String role, String skill) {
 
+        inputUserandPass(login, password);
+        inputNameplusGender(firstName, lastName, gender);
+        inputDate(birthDate);
+        inputAdresse(address, city, cp, tel, mail);
+        inputRoleAndSkill(role, skill);
+
+        try {
+            submit();
+        } catch (Exception e) {
+            System.out.println("ERROR : Something went wrong with the registration");
+            return null;
+        }
+
+        Membre membrePage = new Accueil(driver,wait).
+                goToConnexion()
+                .inputAdmin()
+                .pressConnexionButton()
+                .goToJardenners()
+                .validateMember(mail);
+
+        return new Accueil(driver, wait).disconnect();
+    }
+
+    public void createAccountValideItAndConnect(String login, String password, String firstName,
+                                                String lastName, String gender, String birthDate,
+                                                String address, String city, String cp,
+                                                String tel, String mail, String role, String skill) {
+
+        Connexion connexionPage =  fullInputRegistrationAndSubmit(login, password, firstName,
+                lastName, gender,birthDate,
+                address, city, cp,
+                tel, mail ,role, skill)
+                .goToConnexion()
+                .inputUserAndPass(login, password);
+    }
 
 }

@@ -72,6 +72,8 @@ public class Accueil {
     public Tache goToTask() {
         TASK.click();
         return new Tache(driver, wait);
+    }
+
     public WebElement getVueAccueil() {
         return INFORMATION;
     }
