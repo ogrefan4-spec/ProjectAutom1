@@ -73,6 +73,7 @@ public class TacheTest extends BaseTest {
         accueilPage.goToConnexion().inputAdmin().pressConnexionButton();
         Membre membrePage = accueilPage.goToJardenners();
         membrePage.deleteMember(mail);
+        
     }
 
 //    @Test
