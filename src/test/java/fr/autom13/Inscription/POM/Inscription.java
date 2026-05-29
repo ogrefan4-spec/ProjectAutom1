@@ -128,7 +128,7 @@ public class Inscription {
     public Inscription inputNameplusGender(String name, String lname, String gender) {
         clearAndType(NAME, name);
         clearAndType(LASTNAME, lname);
-        new Select(GENDER).selectByVisibleText(gender);
+        new Select(GENDER).selectByValue(gender);
         return this;
     }
 
@@ -146,9 +146,11 @@ public class Inscription {
         return this;
     }
 
-    public Inscription inputRoleAndSkill(String role, String skill) {
-        new Select(ROLE).selectByVisibleText(role);
-        new Select(SKILLLVL).selectByVisibleText(skill);
+    public Inscription inputRoleAndSkill(String skill, String role) {
+        wait.until(ExpectedConditions.elementToBeClickable(SKILLLVL));
+        new Select(SKILLLVL).selectByValue(skill);
+        wait.until(ExpectedConditions.elementToBeClickable(ROLE));
+        new Select(ROLE).selectByValue(role);
         return this;
     }
 
