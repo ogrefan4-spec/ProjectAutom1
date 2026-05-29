@@ -17,14 +17,17 @@ public class Accueil {
     @FindBy(xpath = "//a[@href='connection.html']")
     private WebElement CONNEXION;
 
+    @FindBy(xpath = "//a[@href='plots.html']")
+    private WebElement PLOTS;
+
     @FindBy(id = "informations")
     private WebElement INFORMATION;
 
     @FindBy(xpath = "//a[@href='task.html']")
     private WebElement TASK;
 
-    @FindBy(id = "plots")
-    private WebElement PLOTS;
+    //@FindBy(id = "plots")
+    //private WebElement PLOTS;
 
     @FindBy(xpath = "//a[@href='jardeneers.html']")
     private WebElement MEMBERS;
@@ -50,6 +53,11 @@ public class Accueil {
         return new Connexion(driver, wait);
     }
 
+    public Connexion goToPlot() {
+        PLOTS.click();
+        return new Connexion(driver, wait);
+    }
+
     public Inscription goToRegister() {
         INSCRIPTION.click();
         return new Inscription(driver, wait);
@@ -58,6 +66,11 @@ public class Accueil {
     public Membre goToJardenners() {
         MEMBERS.click();
         return new Membre(driver, wait);
+    }
+
+    public Parcelle goToParcelle(){
+        PLOTS.click();
+        return new Parcelle(driver, wait);
     }
 
     public boolean estAffichee() {return vueAccueil.isDisplayed();}
