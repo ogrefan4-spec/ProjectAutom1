@@ -1,4 +1,7 @@
 package fr.autom13.Inscription.POM;
+import fr.autom13.Inscription.UtilsConn;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,12 +12,21 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+
 import java.time.format.DateTimeFormatter;
+
+import static fr.autom13.Inscription.UtilsConn.cellValue;
+import static fr.autom13.Inscription.UtilsConn.clearAndType;
 
 public class Inscription {
     private final WebDriver driver;
     private final WebDriverWait wait;
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+    private static final String DEFAULT_EXCEL_PATH = "src/test/java/fr/autom13/Inscription/excel/membres.xlsx";
+    private static final String SUCCESS_MESSAGE = "Votre inscription est désormais en attente de validation";
 
     @FindBy(css = "nav .active")
     private WebElement INSCRIPTION;
@@ -75,55 +87,77 @@ public class Inscription {
         wait.until(ExpectedConditions.visibilityOf(INSCRIPTION));
     }
 
+    public Inscription fillFromExcel(int rowIndex) {
+        return fillFromExcel(DEFAULT_EXCEL_PATH, rowIndex);
+    }
+
+    public Inscription fillFromExcel(String excelPath, int rowIndex) {
+        try (FileInputStream fis = new FileInputStream(excelPath);
+             Workbook workbook = new XSSFWorkbook(fis)) {
+
+            Sheet sheet = workbook.getSheetAt(0);
+            Row row = sheet.getRow(rowIndex + 1);
+
+            if (row == null) {
+                throw new IllegalArgumentException(
+                        "Aucune donnée à la ligne " + rowIndex + " dans " + excelPath);
+            }
+
+            inputUserandPass(cellValue(row, 0), cellValue(row, 1));
+            inputNameplusGender(cellValue(row, 2), cellValue(row, 3), cellValue(row, 4));
+            inputDate(cellValue(row, 5));
+            inputAdresse(
+                    cellValue(row, 6), cellValue(row, 7),
+                    cellValue(row, 8), cellValue(row, 9),
+                    cellValue(row, 10)
+            );
+            inputRoleAndSkill(cellValue(row, 11), cellValue(row, 12));
+
+        } catch (IOException e) {
+            throw new RuntimeException("Impossible de lire le fichier Excel : " + excelPath, e);
+        }
+        return this;
+    }
+
     public Inscription inputUserandPass(String user, String psw) {
-        USER.clear();
-        USER.sendKeys(user);
-        PSW.clear();
-        PSW.sendKeys(psw);
+        clearAndType(USER, user);
+        clearAndType(PSW, psw);
         return this;
     }
 
     public Inscription inputNameplusGender(String name, String lname, String gender) {
-        NAME.clear();
-        NAME.sendKeys(name);
-        LASTNAME.clear();
-        LASTNAME.sendKeys(lname);
-        Select genderselect = new Select(GENDER);
-        genderselect.selectByVisibleText(gender);
+        clearAndType(NAME, name);
+        clearAndType(LASTNAME, lname);
+        new Select(GENDER).selectByVisibleText(gender);
         return this;
     }
 
     public Inscription inputDate(String date) {
-        BDATE.clear();
-        BDATE.sendKeys(date);
+        clearAndType(BDATE, date);
         return this;
     }
 
     public Inscription inputAdresse(String adress, String city, String zip, String phone, String email) {
-        ADDRESS.clear();
-        ADDRESS.sendKeys(adress);
-        CITY.clear();
-        CITY.sendKeys(city);
-        ZIPCODE.clear();
-        ZIPCODE.sendKeys(zip);
-        PHONE.clear();
-        PHONE.sendKeys(phone);
-        EMAIL.clear();
-        EMAIL.sendKeys(email);
+        clearAndType(ADDRESS, adress);
+        clearAndType(CITY, city);
+        clearAndType(ZIPCODE, zip);
+        clearAndType(PHONE, phone);
+        clearAndType(EMAIL, email);
         return this;
     }
 
-    public Inscription inputRoleAndSkill(String role, String Skill) {
-        Select roleselect = new Select(ROLE);
-        Select skillselect = new Select(SKILLLVL);
-        roleselect.selectByVisibleText(role);
-        skillselect.selectByVisibleText(Skill);
+    public Inscription inputRoleAndSkill(String role, String skill) {
+        new Select(ROLE).selectByVisibleText(role);
+        new Select(SKILLLVL).selectByVisibleText(skill);
         return this;
     }
 
-    public String pressSubmitButton() {
+    public String submit() {
         SUBMIT.click();
         wait.until(ExpectedConditions.visibilityOf(VALIDATION));
-        return "Votre inscription est désormais en attente de validation";
+        return SUCCESS_MESSAGE;
     }
+
+
+
 }
