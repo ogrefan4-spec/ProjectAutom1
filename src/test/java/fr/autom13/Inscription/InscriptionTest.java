@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -49,16 +50,6 @@ public class InscriptionTest {
     }
 
     @Test
-    @Order(1)
-    @DisplayName("Test mouse Hover Menu")
-    void testRegis() {
-        Accueil accueil = new Accueil(driver, wait);
-        Connexion conn = accueil.goToConnexion();
-        conn.seConnecter("admin", "admin");
-        accueil.goToJardenners();
-    }
-
-    @Test
     @Order(2)
     @DisplayName("REGISTER")
     void testRegister() throws InterruptedException {
@@ -89,7 +80,7 @@ public class InscriptionTest {
 
         String email = getEmailFromExcel(rowIndex);
         String message = inscription
-                .fillFromExcel(0)
+                .fillFromExcel(rowIndex)
                 .submit();
 
         assertEquals("Votre inscription est désormais en attente de validation", message);
@@ -97,6 +88,8 @@ public class InscriptionTest {
         connexion.inputAdmin();
         accueil = connexion.pressConnexionButton();
         Membre membre = accueil.goToJardenners();
+        wait.until(webDriver -> ((JavascriptExecutor) webDriver)
+                .executeScript("return document.readyState").equals("complete"));
         Thread.sleep(3000);
         membre.validateMember(email);
     }

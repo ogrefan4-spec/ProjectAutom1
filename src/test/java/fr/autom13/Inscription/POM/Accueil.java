@@ -28,7 +28,7 @@ public class Accueil {
     @FindBy(id = "plots")
     private WebElement PLOTS;
 
-    @FindBy(xpath = "//a[@href='jardeneers.html']")
+    @FindBy(xpath = "//a[@href='jardeeners.html']")
     private WebElement MEMBERS;
 
     @FindBy(xpath = "//a[@href='index.html']")

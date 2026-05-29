@@ -47,7 +47,7 @@ public class Membre {
         this.driver = driver;
         this.wait = wait;
         PageFactory.initElements(driver, this);
-        wait.until(ExpectedConditions.visibilityOf(MEMBER));
+        wait.until(ExpectedConditions.visibilityOf(VALIDATE_SECTION));
     }
 
     public Membre validateMember(String email) {
