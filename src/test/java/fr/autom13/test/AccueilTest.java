@@ -1,7 +1,7 @@
 package fr.autom13.test;
 
-import fr.autom13.POM.Accueil;
-import fr.autom13.POM.Connexion;
+import fr.autom13.Inscription.POM.Accueil;
+import fr.autom13.Inscription.POM.Connexion;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;

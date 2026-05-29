@@ -11,31 +11,15 @@ public class Accueil {
     private final WebDriver driver;
     private final WebDriverWait wait;
 
-<<<<<<< HEAD:src/test/java/fr/autom13/Inscription/POM/Accueil.java
-    @FindBy(linkText = "Connexion")
-    private WebElement CONN;
-
-    @FindBy(linkText = "Inscription")
-=======
-    @FindBy(xpath = "//a[@href='connection.html']")
-    private WebElement CONN;
-
     @FindBy(xpath = "//a[@href='registration.html']")
->>>>>>> 438de879a33d7c45e2f1dfa1bb76ee3084c3ee0a:src/test/java/fr/autom13/POM/Accueil.java
-    private WebElement REGISTER;
+    private WebElement INSCRIPTION;
+
+    @FindBy(xpath = "//a[@href='connection.html']")
+    private WebElement CONNEXION;
 
     @FindBy(id = "informations")
     private WebElement INFORMATION;
 
-<<<<<<< HEAD:src/test/java/fr/autom13/Inscription/POM/Accueil.java
-    @FindBy(linkText = "Tâches")
-    private WebElement TASK;
-
-    @FindBy(linkText = "Parcelles")
-    private WebElement PLOTS;
-
-    @FindBy(linkText = "Membres")
-=======
     @FindBy(xpath = "//a[@href='task.html']")
     private WebElement TASK;
 
@@ -43,7 +27,6 @@ public class Accueil {
     private WebElement PLOTS;
 
     @FindBy(xpath = "//a[@href='jardeneers.html']")
->>>>>>> 438de879a33d7c45e2f1dfa1bb76ee3084c3ee0a:src/test/java/fr/autom13/POM/Accueil.java
     private WebElement MEMBERS;
 
     @FindBy(id = "unstaffedImminentTasks")
@@ -52,22 +35,23 @@ public class Accueil {
     @FindBy(id = "unstaffedTasks")
     private WebElement unstaffedTasks;
 
-    public WebElement vueAccueil = INFORMATION;
+    public WebElement vueAccueil;
 
     public Accueil(WebDriver driver, WebDriverWait wait) {
         this.driver = driver;
         this.wait = wait;
         PageFactory.initElements(driver, this);
         wait.until(ExpectedConditions.visibilityOf(INFORMATION));
+        vueAccueil = INFORMATION;
     }
 
     public Connexion goToConnexion() {
-        CONN.click();
+        CONNEXION.click();
         return new Connexion(driver, wait);
     }
 
     public Inscription goToRegister() {
-        REGISTER.click();
+        INSCRIPTION.click();
         return new Inscription(driver, wait);
     }
 
