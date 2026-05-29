@@ -24,7 +24,6 @@ import java.time.Duration;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static fr.autom13.Inscription.UtilsConn.getEmailFromExcel;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -62,7 +61,6 @@ public class inscriptionTestMultipleRegister {
         Accueil accueil = new Accueil(driver,wait);
         Inscription inscription = accueil.goToRegister();
 
-        String email = getEmailFromExcel(rowIndex);
         String message = inscription
                 .fillFromData(data)
                 .submit();

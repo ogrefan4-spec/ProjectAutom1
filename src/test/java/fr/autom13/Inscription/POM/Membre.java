@@ -32,6 +32,24 @@ public class Membre {
     @FindBy(id = "jardeenersToValidateCount")
     private WebElement PAGE_COUNT;
 
+    @FindBy(id = "beginners")
+    private WebElement beginnersSection;
+
+    @FindBy(id = "confirmed")
+    private WebElement confirmedSection;
+
+    @FindBy(id = "experts")
+    private WebElement expertsSection;
+
+    @FindBy(id = "beginnerJardeenersNextButton")
+    private WebElement beginnerNextBtn;
+
+    @FindBy(id = "confirmedJardeenersNextButton")
+    private WebElement confirmedNextBtn;
+
+    @FindBy(id = "expertJardeenersNextButton")
+    private WebElement expertNextBtn;
+
     @FindBy(id = "jardeenersToValidate")
     private WebElement VALIDATE_SECTION;
 
@@ -68,6 +86,49 @@ public class Membre {
         return this;
     }
 
+    public Membre modifyMemberEmail(String currentEmail, String newEmail) {
+        WebElement form = findValidatedMemberFormByEmail(currentEmail);
+        WebElement emailInput = form.findElement(By.id("emailInput"));
+
+        emailInput.clear();
+        emailInput.sendKeys(newEmail);
+
+        return this;
+    }
+
+    public Membre confirmModification(String email) {
+        WebElement form = findValidatedMemberFormByEmail(email);
+
+        String formId = form.getDomAttribute("id");
+        String memberId = formId.replace("modifyJardeenerForm", "");
+
+        WebElement modifyBtn = wait.until(ExpectedConditions.elementToBeClickable(
+                By.id("modifyValidatedJardeenerButton" + memberId)
+        ));
+        modifyBtn.click();
+
+        wait.until(ExpectedConditions.stalenessOf(form));
+        wait.until(ExpectedConditions.visibilityOf(expertsSection));
+
+        return this;
+    }
+
+    public Membre deleteMember(String email) {
+        WebElement form = findValidatedMemberFormByEmail(email);
+
+        String formId = form.getDomAttribute("id");
+        String memberId = formId.replace("modifyJardeenerForm", "");
+
+        WebElement deleteBtn = wait.until(ExpectedConditions.elementToBeClickable(
+                By.id("deleteValidatedJardeenerButton" + memberId)
+        ));
+        deleteBtn.click();
+
+        wait.until(ExpectedConditions.invisibilityOf(form));
+
+        return this;
+    }
+
     private boolean tryValidateMemberOnCurrentPage(String email) {
         wait.until(ExpectedConditions.visibilityOf(VALIDATE_SECTION));
 
@@ -92,6 +153,66 @@ public class Membre {
         return false;
     }
 
+    private WebElement findValidatedMemberFormByEmail(String email) {
+        List<WebElement> sections = List.of(beginnersSection, confirmedSection, expertsSection);
+        List<WebElement> nextBtns = List.of(beginnerNextBtn, confirmedNextBtn, expertNextBtn);
+
+        for (int i = 0; i < sections.size(); i++) {
+            WebElement form = findFormInSection(sections.get(i), nextBtns.get(i), email);
+            if (form != null) return form;
+        }
+
+        throw new RuntimeException("Membre avec l'email '" + email + "' non trouvé dans les membres validés.");
+    }
+
+    private WebElement findFormInSection(WebElement section, WebElement nextBtn, String email) {
+        while (!Objects.requireNonNull(nextBtn.getDomAttribute("class")).contains("disabled")) {
+            WebElement prevBtn = getPrevButtonForSection(section);
+            if (Objects.requireNonNull(prevBtn.getDomAttribute("class")).contains("disabled")) break;
+            prevBtn.click();
+            wait.until(ExpectedConditions.visibilityOf(section));
+        }
+
+        while (true) {
+            List<WebElement> emailInputs = section.findElements(By.id("emailInput"));
+            for (WebElement input : emailInputs) {
+                if (input.getDomAttribute("value") != null
+                        && Objects.requireNonNull(input.getDomAttribute("value")).contains(email)) {
+                    return input.findElement(By.xpath("./ancestor::form[starts-with(@id,'modifyJardeenerForm')]"));
+                }
+            }
+
+            if (Objects.requireNonNull(nextBtn.getDomAttribute("class")).contains("disabled")) break;
+            nextBtn.click();
+            wait.until(ExpectedConditions.visibilityOf(section));
+        }
+
+        return null;
+    }
+
+    private WebElement getPrevButtonForSection(WebElement section) {
+        String sectionId = section.getDomAttribute("id");
+        return switch (sectionId) {
+            case "beginners" -> driver.findElement(By.id("beginnerJardeenersPreviousButton"));
+            case "confirmed" -> driver.findElement(By.id("confirmedJardeenersPreviousButton"));
+            case "experts" -> driver.findElement(By.id("expertJardeenersPreviousButton"));
+            default -> throw new RuntimeException("Section inconnue : " + sectionId);
+        };
+    }
+
+    private boolean isMemberPresentInSection(WebElement section, String email, WebElement nextBtn) {
+        while (true) {
+            List<WebElement> inputs = section.findElements(By.id("emailInput"));
+            for (WebElement input : inputs) {
+                if (email.equals(input.getAttribute("value"))) return true;
+            }
+            if (Objects.requireNonNull(nextBtn.getDomAttribute("class")).contains("disabled")) break;
+            nextBtn.click();
+            wait.until(ExpectedConditions.visibilityOf(section));
+        }
+        return false;
+    }
+
     private void goToFirstPage() {
         while (isPreviousButtonEnabled()) {
             PREV_BTN.click();
@@ -100,6 +221,12 @@ public class Membre {
                             .stream().findFirst().orElse(VALIDATE_SECTION)
             ));
         }
+    }
+
+    public boolean isMemberEmailPresent(String email) {
+        return isMemberPresentInSection(beginnersSection, email, beginnerNextBtn)
+                || isMemberPresentInSection(confirmedSection, email, confirmedNextBtn)
+                || isMemberPresentInSection(expertsSection, email, expertNextBtn);
     }
 
 
@@ -115,18 +242,18 @@ public class Membre {
         NEXT_BTN.click();
 
         if (!currentEmails.isEmpty()) {
-            wait.until(ExpectedConditions.stalenessOf(currentEmails.get(0)));
+            wait.until(ExpectedConditions.stalenessOf(currentEmails.getFirst()));
         }
 
         return true;
     }
 
     private boolean isNextButtonEnabled() {
-        return NEXT_BTN.isEnabled() && !NEXT_BTN.getAttribute("class").contains("disabled");
+        return NEXT_BTN.isEnabled() && !Objects.requireNonNull(NEXT_BTN.getDomAttribute("class")).contains("disabled");
     }
 
     private boolean isPreviousButtonEnabled() {
-        return PREV_BTN.isEnabled() && !PREV_BTN.getAttribute("class").contains("disabled");
+        return PREV_BTN.isEnabled() && !Objects.requireNonNull(PREV_BTN.getDomAttribute("class")).contains("disabled");
     }
 }
 
