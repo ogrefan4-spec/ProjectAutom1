@@ -160,7 +160,7 @@ public class Inscription {
         return SUCCESS_MESSAGE;
     }
 
-    public Accueil fullInputRegistrationAndSubmit(String login, String password, String firstName,
+    private Accueil fullInputRegistrationAndSubmit(Accueil accueilPage ,String login, String password, String firstName,
                                                   String lastName, String gender, String birthDate,
                                                   String address, String city, String cp,
                                                   String tel, String mail, String role, String skill) {
@@ -169,7 +169,7 @@ public class Inscription {
         inputNameplusGender(firstName, lastName, gender);
         inputDate(birthDate);
         inputAdresse(address, city, cp, tel, mail);
-        inputRoleAndSkill(role, skill);
+        inputRoleAndSkill(skill, role);
 
         try {
             submit();
@@ -178,27 +178,34 @@ public class Inscription {
             return null;
         }
 
-        Membre membrePage = new Accueil(driver,wait).
-                goToConnexion()
-                .inputAdmin()
-                .pressConnexionButton()
-                .goToJardenners()
-                .validateMember(mail);
+        accueilPage.backToAccueil(false);
+        Connexion connexionPage = accueilPage.goToConnexion().inputAdmin();
+        accueilPage = connexionPage.pressConnexionButton();
+        Membre membrePage = accueilPage.goToJardenners().validateMember(mail);
 
-        return new Accueil(driver, wait).disconnect();
+//        Membre membrePage = new Accueil(driver,wait).
+//                goToConnexion()
+//                .inputAdmin()
+//                .pressConnexionButton()
+//                .goToJardenners()
+//                .validateMember(mail);
+        accueilPage.disconnect();
+
+        return accueilPage;
     }
 
-    public void createAccountValideItAndConnect(String login, String password, String firstName,
+    public void createAccountValideItAndConnect(Accueil accueilPage, String login, String password, String firstName,
                                                 String lastName, String gender, String birthDate,
                                                 String address, String city, String cp,
                                                 String tel, String mail, String role, String skill) {
 
-        Connexion connexionPage =  fullInputRegistrationAndSubmit(login, password, firstName,
+        Connexion connexionPage =  fullInputRegistrationAndSubmit(accueilPage, login, password, firstName,
                 lastName, gender,birthDate,
                 address, city, cp,
                 tel, mail ,role, skill)
                 .goToConnexion()
                 .inputUserAndPass(login, password);
+        accueilPage = connexionPage.pressConnexionButton();
     }
 
 }

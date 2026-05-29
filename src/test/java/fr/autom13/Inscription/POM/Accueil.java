@@ -35,6 +35,12 @@ public class Accueil {
     @CacheLookup
     private WebElement DISCONNECT;
 
+    @FindBy(xpath = "//a[@href='index.html']")
+    private WebElement ACCUEIL;
+
+    @FindBy(xpath = "//a[@href='dashboard.html']")
+    private WebElement ACCUEILWHENCONNECTED;
+
     @FindBy(id = "unstaffedImminentTasks")
     private WebElement unstaffedImminentTasks;
 
@@ -81,6 +87,16 @@ public class Accueil {
     public Accueil disconnect(){
         wait.until(ExpectedConditions.elementToBeClickable(DISCONNECT)).click();
         return new Accueil(driver, wait);
+    }
+
+    public Accueil backToAccueil(boolean isConnected) {
+
+        if (isConnected) {
+            ACCUEILWHENCONNECTED.click();
+        } else {
+            ACCUEIL.click();
+        }
+        return new Accueil(driver,wait);
     }
 
     public boolean estAffichee() {return vueAccueil.isDisplayed();}
