@@ -7,7 +7,9 @@ import fr.autom13.Inscription.POM.Membre;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -36,16 +38,16 @@ public class InscriptionTest {
     private static final String DEFAULT_EXCEL_PATH = "src/test/java/fr/autom13/Inscription/excel/membres.xlsx";
     private static final String URL = "http://localhost:8085/index.html";
 
-    @BeforeAll
-    static void setUp() {
+    @BeforeEach
+    void setUp() {
         driver = new FirefoxDriver();
         driver.manage().window().maximize();
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.get(URL);
     }
 
-    @AfterAll
-    static void tearDown() {
+    @AfterEach
+    void tearDown() {
         if (driver != null) driver.quit();
     }
 
@@ -90,7 +92,6 @@ public class InscriptionTest {
         Membre membre = accueil.goToJardenners();
         wait.until(webDriver -> ((JavascriptExecutor) webDriver)
                 .executeScript("return document.readyState").equals("complete"));
-        Thread.sleep(3000);
         membre.validateMember(email);
     }
 
