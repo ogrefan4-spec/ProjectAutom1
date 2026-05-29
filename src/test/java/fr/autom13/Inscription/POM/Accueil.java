@@ -1,9 +1,7 @@
 package fr.autom13.Inscription.POM;
 
-import fr.autom13.tache.TacheTest;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -19,28 +17,26 @@ public class Accueil {
     @FindBy(xpath = "//a[@href='connection.html']")
     private WebElement CONNEXION;
 
+    @FindBy(xpath = "//a[@href='plots.html']")
+    private WebElement PLOTS;
+
     @FindBy(id = "informations")
     private WebElement INFORMATION;
 
-    @FindBy(xpath = "//a[@href='tasks.html']")
+    @FindBy(xpath = "//a[@href='task.html']")
     private WebElement TASK;
 
-    @FindBy(id = "plots")
-    private WebElement PLOTS;
+    //@FindBy(id = "plots")
+    //private WebElement PLOTS;
 
-    @FindBy(xpath = "//a[@href='jardeeners.html']")
+    @FindBy(xpath = "//a[@href='jardeneers.html']")
     private WebElement MEMBERS;
-
-    @FindBy(xpath = "//a[@href='index.html']")
-    @CacheLookup
-    private WebElement DISCONNECT;
 
     @FindBy(id = "unstaffedImminentTasks")
     private WebElement unstaffedImminentTasks;
 
     @FindBy(id = "unstaffedTasks")
     private WebElement unstaffedTasks;
-
 
     public WebElement vueAccueil;
 
@@ -49,13 +45,16 @@ public class Accueil {
         this.wait = wait;
         PageFactory.initElements(driver, this);
         wait.until(ExpectedConditions.visibilityOf(INFORMATION));
-
         vueAccueil = INFORMATION;
     }
 
     public Connexion goToConnexion() {
-        wait.until(ExpectedConditions.elementToBeClickable(CONNEXION));
         CONNEXION.click();
+        return new Connexion(driver, wait);
+    }
+
+    public Connexion goToPlot() {
+        PLOTS.click();
         return new Connexion(driver, wait);
     }
 
@@ -69,18 +68,9 @@ public class Accueil {
         return new Membre(driver, wait);
     }
 
-    public Tache goToTask() {
-        TASK.click();
-        return new Tache(driver, wait);
-    }
-
-    public WebElement getVueAccueil() {
-        return INFORMATION;
-    }
-
-    public Accueil disconnect(){
-        wait.until(ExpectedConditions.elementToBeClickable(DISCONNECT)).click();
-        return new Accueil(driver, wait);
+    public Parcelle goToParcelle(){
+        PLOTS.click();
+        return new Parcelle(driver, wait);
     }
 
     public boolean estAffichee() {return vueAccueil.isDisplayed();}
