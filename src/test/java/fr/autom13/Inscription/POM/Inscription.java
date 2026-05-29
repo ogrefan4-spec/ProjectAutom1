@@ -165,6 +165,7 @@ public class Inscription {
                                                   String address, String city, String cp,
                                                   String tel, String mail, String role, String skill) {
 
+
         inputUserandPass(login, password);
         inputNameplusGender(firstName, lastName, gender);
         inputDate(birthDate);
@@ -193,7 +194,9 @@ public class Inscription {
                                                 String address, String city, String cp,
                                                 String tel, String mail, String role, String skill) {
 
-        Connexion connexionPage =  fullInputRegistrationAndSubmit(login, password, firstName,
+        Connexion connexionPage =  new Accueil(driver,wait)
+                .goToRegister()
+                .fullInputRegistrationAndSubmit(login, password, firstName,
                 lastName, gender,birthDate,
                 address, city, cp,
                 tel, mail ,role, skill)
