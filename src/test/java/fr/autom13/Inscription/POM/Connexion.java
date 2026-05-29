@@ -52,4 +52,19 @@ public class Connexion {
         return new Accueil(driver, wait);
     }
 
+    public Connexion inputAdmin() {
+        wait.until(ExpectedConditions.elementToBeClickable(USER));
+        USER.clear();
+        USER.sendKeys("admin");
+        wait.until(driver ->
+                USER.getAttribute("value").equals("admin"));
+
+        wait.until(ExpectedConditions.elementToBeClickable(PSW));
+        PSW.clear();
+        PSW.sendKeys("admin");
+        wait.until(driver ->
+                PSW.getAttribute("value").equals("admin"));
+        return this;
+    }
+
 }

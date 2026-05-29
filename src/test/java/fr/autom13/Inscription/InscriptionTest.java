@@ -3,6 +3,7 @@ package fr.autom13.Inscription;
 import fr.autom13.Inscription.POM.Accueil;
 import fr.autom13.Inscription.POM.Connexion;
 import fr.autom13.Inscription.POM.Inscription;
+import fr.autom13.Inscription.POM.Membre;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -60,8 +61,34 @@ public class InscriptionTest {
         inscription.inputAdresse("5 rue de la police", "Paris", "75002", "0666584512", "p.l@mail.com");
         inscription.inputRoleAndSkill("Propriétaire", "Débutant");
         Thread.sleep(3000);
-        String rsult = inscription.pressSubmitButton();
+        String rsult = inscription.submit();
         assertEquals("Votre inscription est désormais en attente de validation", rsult);
+        Connexion connexion = accueil.goToConnexion();
+        connexion.inputAdmin();
+        accueil = connexion.pressConnexionButton();
+        Membre membre = accueil.goToJardenners();
+        Thread.sleep(3000);
+        membre.validateMember("p.l@mail.com");
+    }
+
+    @Test
+    @Order(3)
+    @DisplayName("Test With Excel")
+    void testRegisterFromExcel() throws InterruptedException {
+        Accueil accueil = new Accueil(driver,wait);
+        Inscription inscription = accueil.goToRegister();
+
+        String message = inscription
+                .fillFromExcel(0)   // lit la ligne 0 (première ligne de données)
+                .submit();
+
+        assertEquals("Votre inscription est désormais en attente de validation", message);
+        Connexion connexion = accueil.goToConnexion();
+        connexion.inputAdmin();
+        accueil = connexion.pressConnexionButton();
+        Membre membre = accueil.goToJardenners();
+        Thread.sleep(3000);
+        membre.validateMember("pierrot77@gmail.com");
     }
 
 }
