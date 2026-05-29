@@ -54,8 +54,7 @@ public class InscriptionTest {
     void testRegis() {
         Accueil accueil = new Accueil(driver, wait);
         Connexion conn = accueil.goToConnexion();
-        conn.inputUserAndPass("admin", "admin");
-        accueil = conn.pressConnexionButton();
+        conn.seConnecter("admin", "admin");
         accueil.goToJardenners();
     }
 

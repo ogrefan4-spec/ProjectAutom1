@@ -67,4 +67,17 @@ public class Connexion {
         return this;
     }
 
+    /***
+     * Tente une connexion avec des identifiants invalides.
+     * Reste sur la LoginPage (pas de redirection).
+     */
+    public Connexion tenterConnexionInvalide (String login, String password){
+        USER.clear();
+        USER.sendKeys(login);
+        PSW.clear();
+        PSW.sendKeys(password);
+        SUBMIT.click();
+        return this;
+    }
+
 }

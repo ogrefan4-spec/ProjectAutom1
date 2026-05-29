@@ -2,6 +2,7 @@ package fr.autom13.Inscription.POM;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -11,39 +12,54 @@ public class Accueil {
     private final WebDriver driver;
     private final WebDriverWait wait;
 
-    @FindBy(linkText = "Connexion")
-    private WebElement CONN;
+    @FindBy(xpath = "//a[@href='registration.html']")
+    private WebElement INSCRIPTION;
 
-    @FindBy(linkText = "Inscription")
-    private WebElement REGISTER;
+    @FindBy(xpath = "//a[@href='connection.html']")
+    private WebElement CONNEXION;
 
     @FindBy(id = "informations")
-    private WebElement ACCUEIL;
+    private WebElement INFORMATION;
 
-    @FindBy(linkText = "Tâches")
+    @FindBy(xpath = "//a[@href='task.html']")
     private WebElement TASK;
 
-    @FindBy(linkText = "Parcelles")
+    @FindBy(id = "plots")
     private WebElement PLOTS;
 
-    @FindBy(linkText = "Membres")
+    @FindBy(xpath = "//a[@href='jardeneers.html']")
     private WebElement MEMBERS;
 
+    @FindBy(xpath = "//a[@href='index.html']")
+    @CacheLookup
+    private WebElement DISCONNECT;
+
+    @FindBy(id = "unstaffedImminentTasks")
+    private WebElement unstaffedImminentTasks;
+
+    @FindBy(id = "unstaffedTasks")
+    private WebElement unstaffedTasks;
+
+
+    public WebElement vueAccueil;
 
     public Accueil(WebDriver driver, WebDriverWait wait) {
         this.driver = driver;
         this.wait = wait;
         PageFactory.initElements(driver, this);
-        wait.until(ExpectedConditions.visibilityOf(ACCUEIL));
+        wait.until(ExpectedConditions.visibilityOf(INFORMATION));
+
+        vueAccueil = INFORMATION;
     }
 
     public Connexion goToConnexion() {
-        CONN.click();
+        wait.until(ExpectedConditions.elementToBeClickable(CONNEXION));
+        CONNEXION.click();
         return new Connexion(driver, wait);
     }
 
     public Inscription goToRegister() {
-        REGISTER.click();
+        INSCRIPTION.click();
         return new Inscription(driver, wait);
     }
 
@@ -51,4 +67,21 @@ public class Accueil {
         MEMBERS.click();
         return new Membre(driver, wait);
     }
+
+    public WebElement getVueAccueil() {
+        return INFORMATION;
+    }
+
+    public Accueil disconnect(){
+        wait.until(ExpectedConditions.elementToBeClickable(DISCONNECT)).click();
+        return new Accueil(driver, wait);
+    }
+
+    public boolean estAffichee() {return vueAccueil.isDisplayed();}
+    public boolean informationIsDisplayed() {return INFORMATION.isDisplayed();}
+    public boolean unstaffedTasksIsDisplayed() {return unstaffedTasks.isDisplayed();}
+    public boolean unstaffedImminentTasksIsDisplayed() {return unstaffedImminentTasks.isDisplayed();}
+//    public boolean presentationAssociationIsDisplayed() {return presentationAssociation.isDisplayed();}
+    public boolean plotIsDisplayed() {return PLOTS.isDisplayed();}
+
 }
