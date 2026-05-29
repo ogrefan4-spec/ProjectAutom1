@@ -1,5 +1,4 @@
 package fr.autom13.Inscription.POM;
-import fr.autom13.Inscription.UtilsConn;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -87,6 +86,15 @@ public class Inscription {
         wait.until(ExpectedConditions.visibilityOf(INSCRIPTION));
     }
 
+    public Inscription fillFromData(MembreData data) {
+        fillCredentials(data.login(), data.password());
+        fillIdentity(data.firstName(), data.lastName(), data.gender());
+        fillBirthdate(data.birthdate());
+        fillContact(data.address(), data.city(), data.zipCode(), data.phone(), data.email());
+        fillRoleAndSkill(data.role(), data.skill());
+        return this;
+    }
+
     public Inscription fillFromExcel(int rowIndex) {
         return fillFromExcel(DEFAULT_EXCEL_PATH, rowIndex);
     }
@@ -103,15 +111,15 @@ public class Inscription {
                         "Aucune donnée à la ligne " + rowIndex + " dans " + excelPath);
             }
 
-            inputUserandPass(cellValue(row, 0), cellValue(row, 1));
-            inputNameplusGender(cellValue(row, 2), cellValue(row, 3), cellValue(row, 4));
-            inputDate(cellValue(row, 5));
-            inputAdresse(
+            fillCredentials(cellValue(row, 0), cellValue(row, 1));
+            fillIdentity(cellValue(row, 2), cellValue(row, 3), cellValue(row, 4));
+            fillBirthdate(cellValue(row, 5));
+            fillContact(
                     cellValue(row, 6), cellValue(row, 7),
                     cellValue(row, 8), cellValue(row, 9),
                     cellValue(row, 10)
             );
-            inputRoleAndSkill(cellValue(row, 11), cellValue(row, 12));
+            fillRoleAndSkill(cellValue(row, 11), cellValue(row, 12));
 
         } catch (IOException e) {
             throw new RuntimeException("Impossible de lire le fichier Excel : " + excelPath, e);
@@ -119,25 +127,25 @@ public class Inscription {
         return this;
     }
 
-    public Inscription inputUserandPass(String user, String psw) {
+    public Inscription fillCredentials(String user, String psw) {
         clearAndType(USER, user);
         clearAndType(PSW, psw);
         return this;
     }
 
-    public Inscription inputNameplusGender(String name, String lname, String gender) {
+    public Inscription fillIdentity(String name, String lname, String gender) {
         clearAndType(NAME, name);
         clearAndType(LASTNAME, lname);
         new Select(GENDER).selectByValue(gender);
         return this;
     }
 
-    public Inscription inputDate(String date) {
+    public Inscription fillBirthdate(String date) {
         clearAndType(BDATE, date);
         return this;
     }
 
-    public Inscription inputAdresse(String adress, String city, String zip, String phone, String email) {
+    public Inscription fillContact(String adress, String city, String zip, String phone, String email) {
         clearAndType(ADDRESS, adress);
         clearAndType(CITY, city);
         clearAndType(ZIPCODE, zip);
@@ -146,7 +154,7 @@ public class Inscription {
         return this;
     }
 
-    public Inscription inputRoleAndSkill(String skill, String role) {
+    public Inscription fillRoleAndSkill(String skill, String role) {
         wait.until(ExpectedConditions.elementToBeClickable(SKILLLVL));
         new Select(SKILLLVL).selectByValue(skill);
         wait.until(ExpectedConditions.elementToBeClickable(ROLE));
@@ -163,3 +171,5 @@ public class Inscription {
 
 
 }
+
+

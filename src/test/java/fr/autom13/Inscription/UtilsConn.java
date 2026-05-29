@@ -34,7 +34,7 @@ public class UtilsConn {
              Workbook workbook = new XSSFWorkbook(fis)) {
 
             Sheet sheet = workbook.getSheetAt(0);
-            Row row = sheet.getRow(rowIndex + 1); // +1 pour sauter l'en-tête
+            Row row = sheet.getRow(rowIndex + 1);
 
             if (row == null) {
                 throw new IllegalArgumentException("Aucune donnée à la ligne " + rowIndex);
