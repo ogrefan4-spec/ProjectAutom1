@@ -25,15 +25,10 @@ public class Tache {
         this.driver = driver;
         this.wait = wait;
         PageFactory.initElements(driver, this);
-        waitUntilVueTaskByContext();
+        wait.until(ExpectedConditions.visibilityOf(vueTask));
     }
 
-    public boolean estAffichee() {
-        if(vueTask.isDisplayed())
-            return vueTask.isDisplayed();
-        else
-            return ownerAccountMessage.isDisplayed();
-    }
+    public boolean estAffichee() {return vueTask.isDisplayed();}
     public boolean nonConnectedAccountMessageIsDisplayed() { return nonConnectedAccountMessage.isDisplayed();}
 
     public boolean conformityOfNonConnectedAccountMessage(String message) {
@@ -44,13 +39,5 @@ public class Tache {
 
     public boolean conformityOfOwnerAccountMessage(String message) {
         return ownerAccountMessage.getText().equals(message);
-    }
-
-    private void waitUntilVueTaskByContext() {
-        try {
-            wait.until(ExpectedConditions.visibilityOf(vueTask));
-        } catch (Exception e) {
-            wait.until(ExpectedConditions.visibilityOf(ownerAccountMessage));
-            }
     }
 }

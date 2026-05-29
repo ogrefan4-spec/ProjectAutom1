@@ -51,10 +51,6 @@ public class Membre {
     private WebElement expertNextBtn;
 
     @FindBy(id = "jardeenersToValidate")
-    private WebElement TO_VALIDATE_SECTION;
-
-
-    @FindBy(id = "validated")
     private WebElement VALIDATE_SECTION;
 
     @FindBy(id = "modifyNonValidatedJardeenerButton2")
@@ -70,10 +66,6 @@ public class Membre {
         this.wait = wait;
         PageFactory.initElements(driver, this);
         wait.until(ExpectedConditions.visibilityOf(VALIDATE_SECTION));
-    }
-
-    public boolean estAffichee() {
-        return VALIDATE_SECTION.isDisplayed();
     }
 
     public Membre validateMember(String email) {
@@ -138,9 +130,9 @@ public class Membre {
     }
 
     private boolean tryValidateMemberOnCurrentPage(String email) {
-        wait.until(ExpectedConditions.visibilityOf(TO_VALIDATE_SECTION));
+        wait.until(ExpectedConditions.visibilityOf(VALIDATE_SECTION));
 
-        List<WebElement> emailInputs = TO_VALIDATE_SECTION.findElements(
+        List<WebElement> emailInputs = VALIDATE_SECTION.findElements(
                 By.cssSelector("input[id^='emailInput']")
         );
 
@@ -225,8 +217,8 @@ public class Membre {
         while (isPreviousButtonEnabled()) {
             PREV_BTN.click();
             wait.until(ExpectedConditions.stalenessOf(
-                    TO_VALIDATE_SECTION.findElements(By.cssSelector("input[id^='emailInput']"))
-                            .stream().findFirst().orElse(TO_VALIDATE_SECTION)
+                    VALIDATE_SECTION.findElements(By.cssSelector("input[id^='emailInput']"))
+                            .stream().findFirst().orElse(VALIDATE_SECTION)
             ));
         }
     }
@@ -243,7 +235,7 @@ public class Membre {
             return false;
         }
 
-        List<WebElement> currentEmails = TO_VALIDATE_SECTION.findElements(
+        List<WebElement> currentEmails = VALIDATE_SECTION.findElements(
                 By.cssSelector("input[id^='emailInput']")
         );
 

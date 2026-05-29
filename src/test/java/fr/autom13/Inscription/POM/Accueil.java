@@ -32,16 +32,6 @@ public class Accueil {
     @FindBy(xpath = "//a[@href='jardeneers.html']")
     private WebElement MEMBERS;
 
-    @FindBy(xpath = "//a[@href='index.html']")
-    @CacheLookup
-    private WebElement DISCONNECT;
-
-    @FindBy(xpath = "//a[@href='index.html']")
-    private WebElement ACCUEIL;
-
-    @FindBy(xpath = "//a[@href='dashboard.html']")
-    private WebElement ACCUEILWHENCONNECTED;
-
     @FindBy(id = "unstaffedImminentTasks")
     private WebElement unstaffedImminentTasks;
 
@@ -81,16 +71,6 @@ public class Accueil {
     public Parcelle goToParcelle(){
         PLOTS.click();
         return new Parcelle(driver, wait);
-    }
-
-    public Accueil backToAccueil(boolean isConnected) {
-
-        if (isConnected) {
-            ACCUEILWHENCONNECTED.click();
-        } else {
-            ACCUEIL.click();
-        }
-        return new Accueil(driver,wait);
     }
 
     public boolean estAffichee() {return vueAccueil.isDisplayed();}
