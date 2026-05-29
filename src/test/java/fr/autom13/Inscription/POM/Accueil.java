@@ -66,6 +66,11 @@ public class Accueil {
         return new Connexion(driver, wait);
     }
 
+    public Connexion goToPlot() {
+        PLOTS.click();
+        return new Connexion(driver, wait);
+    }
+
     public Inscription goToRegister() {
         INSCRIPTION.click();
         return new Inscription(driver, wait);
@@ -74,6 +79,11 @@ public class Accueil {
     public Membre goToJardenners() {
         MEMBERS.click();
         return new Membre(driver, wait);
+    }
+
+    public Parcelle goToParcelle() {
+        PLOTS.click();
+        return new Parcelle(driver, wait);
     }
 
     public Tache goToTask() {
