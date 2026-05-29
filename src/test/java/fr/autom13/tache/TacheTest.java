@@ -4,6 +4,7 @@ import fr.autom13.Inscription.POM.Accueil;
 import fr.autom13.Inscription.POM.Connexion;
 import fr.autom13.BaseTest;
 import fr.autom13.Inscription.POM.Inscription;
+import fr.autom13.Inscription.POM.Membre;
 import fr.autom13.Inscription.POM.Tache;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
@@ -40,6 +41,7 @@ public class TacheTest extends BaseTest {
     @DisplayName("Non accès à la page tâche pour un profil Propriétaire")
     public void testNonAccesTachePage_Owner() throws InterruptedException {
         Accueil accueilPage = new Accueil(driver, wait);
+        String mail = "test@mail.com";
         Inscription inscriptionPage = accueilPage.goToRegister();
         inscriptionPage.createAccountValideItAndConnect(
                 accueilPage,
@@ -53,7 +55,7 @@ public class TacheTest extends BaseTest {
                 "Paris",
                 "75000",
                 "0102030405",
-                "test@mail.com",
+                mail,
                 "OWNER",
                 "CONFIRMED");
 
@@ -67,6 +69,10 @@ public class TacheTest extends BaseTest {
         );
 
         accueilPage.backToAccueil(true);
+        accueilPage.disconnect();
+        accueilPage.goToConnexion().inputAdmin().pressConnexionButton();
+        Membre membrePage = accueilPage.goToJardenners();
+        membrePage.deleteMember(mail);
     }
 
 //    @Test

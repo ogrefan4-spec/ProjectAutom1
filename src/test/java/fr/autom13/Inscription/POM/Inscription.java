@@ -174,11 +174,11 @@ public class Inscription {
                                                   String address, String city, String cp,
                                                   String tel, String mail, String role, String skill) {
 
-        inputUserandPass(login, password);
-        inputNameplusGender(firstName, lastName, gender);
-        inputDate(birthDate);
-        inputAdresse(address, city, cp, tel, mail);
-        inputRoleAndSkill(skill, role);
+        fillCredentials(login, password);
+        fillIdentity(firstName, lastName, gender);
+        fillBirthdate(birthDate);
+        fillContact(address, city, cp, tel, mail);
+        fillRoleAndSkill(skill, role);
 
         try {
             submit();
