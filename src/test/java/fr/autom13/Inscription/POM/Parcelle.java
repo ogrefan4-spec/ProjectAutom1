@@ -83,7 +83,7 @@ public class Parcelle {
 
 
     /***
-     * Constucteur paramétré de la classe Connexion
+     * Constucteur paramétré de la classe Parcelle
      * @param driver correspond au webdriver
      * @param wait correspond à l'attente explicite
      */
@@ -102,13 +102,21 @@ public class Parcelle {
         return vueAjoutParcelle.isDisplayed();
     }
 
+    /***
+     * Accesseur permettant de récupérer la vue d'ajout de parcelle afin de contrôler qu'elle est visible depuis une assertion
+     * @return
+     */
     public WebElement getVueAjoutParcelle(){return vueAjoutParcelle;}
 
+    /***
+     * Accesseur permettant de récupérer le message d'ajout de parcelle afin de contrôler le message en cas d'erreur
+     * @return
+     */
     public WebElement getMessageAjoutParcelle(){ return messageAjoutParcelle;}
 
     /***
      * Crée une nouvelle parcelle ave les informations renseignées
-     * La même page, contenant la nouvelle parcelle.
+     * @return La même page, contenant la nouvelle parcelle.
      */
     public Parcelle ajouterParcelle (String name, String adresse, String zipCode,
                                     String city, String width, String length){
@@ -146,10 +154,20 @@ public class Parcelle {
         return new Parcelle(driver, wait);
     }
 
+    /***
+     * Permet de contrôler l'affichage des différentes parcelles visibles.
+     * À ajouter dans un FindBy
+     * @return un booléen égal à true si la liste est vide
+     */
     public boolean listeDesParcellesVisiblesEstVide(){
         return driver.findElements(By.xpath("//div[@id='validated']//div")).isEmpty();
     }
 
+    /***
+     * Permet de contrôler l'affichage des différentes parcelles non visibles.
+     * À ajouter dans un FindBy
+     * @return un booléen égal à true si la liste est vide
+     */
     public boolean listeDesParcellesInvisiblesEstVide(){
         return driver.findElements(By.xpath("//div[@id='non-validated']//div")).isEmpty();
     }

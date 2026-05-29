@@ -62,16 +62,19 @@ public class ParcelleTest {
     }
 
     /***
-     * Méthode permettant de retourner la classe connexion depuis la page d'accueil, simulant un clic
-     * sur le bouton connexion depuis cette dernière.
-     * @return l'objet Connexion utilisé pour effectuer une tentative de connexion.
+     * Méthode permettant de retourner la classe parcelle depuis la page d'accueil, simulant un clic
+     * sur le bouton parcelle depuis cette dernière.
+     * @return l'objet Parcelle
      */
     private Parcelle goToParcelle()
     {
         return new Accueil(driver, wait).goToParcelle();
     }
 
-
+    /***
+     * Test de la création d'une parcelle valide.
+     * Commence par se connecter en tant que propriétaire
+     */
     @Test
     @Order(1)
     public void testCreationParcelleValide(){
@@ -87,9 +90,11 @@ public class ParcelleTest {
         assertTrue(parcellePage.estAffichee());
         assertFalse(parcellePage.getMessageAjoutParcelle().getText().contains(errorMsgEmptyField));
         assertFalse(parcellePage.getMessageAjoutParcelle().getText().contains("La parcelle doit faire au minimum 20m₂."));
-
     }
 
+    /***
+     * Test non passant de la création d'une parcelle avec un champ vide
+     */
     @Test
     @Order(2)
     public void testCreationParcelleInvalideManqueInfo(){
@@ -124,9 +129,11 @@ public class ParcelleTest {
         parcellePage.ajouterParcelle(plotName,plotAdresse,plotZipCode,
                 plotCity,"", validPlotLength);
         assertTrue(parcellePage.getMessageAjoutParcelle().getText().contains(errorMsgEmptyField));
-
     }
 
+    /***
+     * Test non passant de la création d'une parcelle avec un problème sur sa taille (négative ou inférieure à 20m²)
+     */
     @Test
     @Order(2)
     public void testCreerParcelleInvalideTaille() {
@@ -153,6 +160,10 @@ public class ParcelleTest {
 
     }
 
+    /***
+     * Test non passant de la création d'une parcelle avec un nom déjà existant
+     * MANQUE LA DECONNEXION A AJOUTER
+     */
     @Test
     @Order(5)
     public void testCreerParcelleInvalideNomExistant() {
@@ -167,6 +178,10 @@ public class ParcelleTest {
         // SE DECONNECTER A FAIRE
     }
 
+    /***
+     * Test de la connexion en tant qu'administrateur et vérification que la liste des parcelles n'est pas vide
+     * LOG À METTRE A JOUR
+     */
     @Test
     @Order(4)
     public void testAffichageListDesParcellesAdmin() {
@@ -178,7 +193,10 @@ public class ParcelleTest {
         assertFalse(parcellePage.listeDesParcellesVisiblesEstVide());
     }
 
-
+    /***
+     * Test de la connexion en tant que Jardineer et vérification que la liste des parcelles n'est pas vide
+     * LOG À METTRE A JOUR
+     */
     @Test
     @Order(5)
     public void testAffichageListDesParcellesJardeener(){
@@ -190,6 +208,10 @@ public class ParcelleTest {
         assertFalse(parcellePage.listeDesParcellesVisiblesEstVide());
     }
 
+    /***
+     * Test de la connexion en tant que propriétaire et vérification que la liste des parcelles n'est pas vide
+     * LOG À METTRE A JOUR
+     */
     @Test
     @Order(6)
     public void testAffichageListDesParcellesProprietaire(){
