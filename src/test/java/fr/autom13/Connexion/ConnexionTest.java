@@ -1,9 +1,8 @@
 package fr.autom13.Connexion;
 
-
 import fr.autom13.Inscription.POM.Accueil;
 import fr.autom13.Inscription.POM.Connexion;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
@@ -39,10 +38,13 @@ public class ConnexionTest {
      */
     @BeforeAll
     static void setUp() {
+        System.out.println("Initialisation du WebDriver...");
         driver = new FirefoxDriver();
         driver.manage().window().maximize();
         wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         driver.get(URL);
+
+        System.out.println(wait.toString());
     }
 
     /***
@@ -81,6 +83,7 @@ public class ConnexionTest {
      * password comme mot de passe
      *
      * Attente de la vue de la page d'accueil est assertion de visibilité de cette dernière
+     * Déconnexion une fois le test terminé
      */
     @Test
     @Order(1)
@@ -88,10 +91,10 @@ public class ConnexionTest {
         Connexion connexionPage = goToConnexion();
         Accueil accueilPage = connexionPage.seConnecter(loginAdmin, passwordAdmin);
 
-        wait.until(ExpectedConditions.visibilityOf(accueilPage.vueAccueil));
+        wait.until(ExpectedConditions.visibilityOf(accueilPage.getVueAccueil()));
         assertTrue(accueilPage.estAffichee());
 
-        // Déconnexion après authentification réussie
+        accueilPage.disconnect();
     }
 
     /***
@@ -100,6 +103,7 @@ public class ConnexionTest {
      * password comme mot de passe
      *
      * Attente de la vue de la page d'accueil est assertion de visibilité de cette dernière
+     * Déconnexion une fois le test terminé
      */
     @Test
     @Order(2)
@@ -110,7 +114,7 @@ public class ConnexionTest {
         wait.until(ExpectedConditions.visibilityOf(accueilPage.vueAccueil));
         assertTrue(accueilPage.estAffichee());
 
-        // Déconnexion après authentification réussie
+        accueilPage.disconnect();
     }
 
     /***
@@ -119,6 +123,7 @@ public class ConnexionTest {
      * password comme mot de passe
      *
      * Attente de la vue de la page d'accueil est assertion de visibilité de cette dernière
+     * Déconnexion une fois le test terminé
      */
     @Test
     @Order(3)
@@ -129,13 +134,14 @@ public class ConnexionTest {
         wait.until(ExpectedConditions.visibilityOf(accueilPage.vueAccueil));
         assertTrue(accueilPage.estAffichee());
 
-        // Déconnexion après authentification réussie
+        accueilPage.disconnect();
     }
 
     /***
      * Cas de test vérifiant qu'il n'est pas possible de se connecter avec des champs vides
      * Attente de la visibilité du message de connexion et que ce dernier spécifie :
      * Identifiant et/ou mot de passe incorrect(s).
+     * Test démarrant de la page d'accueil mais reste sur la page de connexion
      */
     @Test
     @Order(4)
@@ -151,11 +157,12 @@ public class ConnexionTest {
      * Cas de test vérifiant qu'il n'est pas possible de se connecter sans renseigner de mot de passe
      * Attente de la visibilité du message de connexion et que ce dernier spécifie :
      * Identifiant et/ou mot de passe incorrect(s).
+     * Test démmarant depuis la page de connexion
      */
     @Test
     @Order(5)
     public void testNonPassantMotDePasseVide(){
-        Connexion connexionPage = goToConnexion();
+        Connexion connexionPage = new Connexion(driver,wait);
         connexionPage.tenterConnexionInvalide(loginAdmin,"");
 
         wait.until(ExpectedConditions.visibilityOf(connexionPage.getMessageConnexion()));
@@ -166,11 +173,12 @@ public class ConnexionTest {
      * Cas de test vérifiant qu'il n'est pas possible de se connecter sans renseigner d'identifiant
      * Attente de la visibilité du message de connexion et que ce dernier spécifie :
      * Identifiant et/ou mot de passe incorrect(s).
+     * Test démmarant depuis la page de connexion
      */
     @Test
     @Order(6)
     public void testNonPassantIdentifiantVide(){
-        Connexion connexionPage = goToConnexion();
+        Connexion connexionPage = new Connexion(driver,wait);
         connexionPage.tenterConnexionInvalide("", passwordAdmin);
 
         wait.until(ExpectedConditions.visibilityOf(connexionPage.getMessageConnexion()));
@@ -181,11 +189,12 @@ public class ConnexionTest {
      * Cas de test vérifiant qu'il n'est pas possible de se connecter en renseignant un mot de passe erroné
      * Attente de la visibilité du message de connexion et que ce dernier spécifie :
      * Identifiant et/ou mot de passe incorrect(s).
+     * Test démmarant depuis la page de connexion
      */
     @Test
     @Order(7)
     public void testNonPassantMauvaisMotDePasse(){
-        Connexion connexionPage = goToConnexion();
+        Connexion connexionPage = new Connexion(driver,wait);
         connexionPage.tenterConnexionInvalide(loginAdmin, "JeSuisUnMauvaisMotDePasse");
 
         wait.until(ExpectedConditions.visibilityOf(connexionPage.getMessageConnexion()));
