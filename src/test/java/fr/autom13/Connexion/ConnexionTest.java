@@ -1,7 +1,8 @@
 package fr.autom13.Connexion;
 
-import fr.autom13.POM.Accueil;
-import fr.autom13.POM.Connexion;
+
+import fr.autom13.Inscription.POM.Accueil;
+import fr.autom13.Inscription.POM.Connexion;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;

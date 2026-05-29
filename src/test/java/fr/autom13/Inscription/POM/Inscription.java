@@ -126,6 +126,4 @@ public class Inscription {
         wait.until(ExpectedConditions.visibilityOf(VALIDATION));
         return "Votre inscription est désormais en attente de validation";
     }
-
-
 }

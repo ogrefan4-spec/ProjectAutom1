@@ -1,5 +1,6 @@
 package fr.autom13.Inscription.POM;
 
+import fr.autom13.tache.TacheTest;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -20,7 +21,7 @@ public class Accueil {
     @FindBy(id = "informations")
     private WebElement INFORMATION;
 
-    @FindBy(xpath = "//a[@href='task.html']")
+    @FindBy(xpath = "//a[@href='tasks.html']")
     private WebElement TASK;
 
     @FindBy(id = "plots")
@@ -58,6 +59,11 @@ public class Accueil {
     public Membre goToJardenners() {
         MEMBERS.click();
         return new Membre(driver, wait);
+    }
+
+    public Tache goToTask() {
+        TASK.click();
+        return new Tache(driver, wait);
     }
 
     public boolean estAffichee() {return vueAccueil.isDisplayed();}
