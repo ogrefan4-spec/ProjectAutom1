@@ -204,7 +204,7 @@ public class Membre {
         while (true) {
             List<WebElement> inputs = section.findElements(By.id("emailInput"));
             for (WebElement input : inputs) {
-                if (email.equals(input.getAttribute("value"))) return true;
+                if (email.equals(input.getDomAttribute("value"))) return true;
             }
             if (Objects.requireNonNull(nextBtn.getDomAttribute("class")).contains("disabled")) break;
             nextBtn.click();
