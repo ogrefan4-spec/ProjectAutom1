@@ -2,6 +2,7 @@ package fr.autom13.Inscription.POM;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -55,16 +56,13 @@ public class Accueil {
         this.wait = wait;
         PageFactory.initElements(driver, this);
         wait.until(ExpectedConditions.visibilityOf(INFORMATION));
+
         vueAccueil = INFORMATION;
     }
 
     public Connexion goToConnexion() {
+        wait.until(ExpectedConditions.elementToBeClickable(CONNEXION));
         CONNEXION.click();
-        return new Connexion(driver, wait);
-    }
-
-    public Connexion goToPlot() {
-        PLOTS.click();
         return new Connexion(driver, wait);
     }
 
@@ -78,9 +76,18 @@ public class Accueil {
         return new Membre(driver, wait);
     }
 
-    public Parcelle goToParcelle(){
-        PLOTS.click();
-        return new Parcelle(driver, wait);
+    public Tache goToTask() {
+        TASK.click();
+        return new Tache(driver, wait);
+    }
+
+    public WebElement getVueAccueil() {
+        return INFORMATION;
+    }
+
+    public Accueil disconnect(){
+        wait.until(ExpectedConditions.elementToBeClickable(DISCONNECT)).click();
+        return new Accueil(driver, wait);
     }
 
     public Accueil backToAccueil(boolean isConnected) {
@@ -97,7 +104,7 @@ public class Accueil {
     public boolean informationIsDisplayed() {return INFORMATION.isDisplayed();}
     public boolean unstaffedTasksIsDisplayed() {return unstaffedTasks.isDisplayed();}
     public boolean unstaffedImminentTasksIsDisplayed() {return unstaffedImminentTasks.isDisplayed();}
-//    public boolean presentationAssociationIsDisplayed() {return presentationAssociation.isDisplayed();}
+    //    public boolean presentationAssociationIsDisplayed() {return presentationAssociation.isDisplayed();}
     public boolean plotIsDisplayed() {return PLOTS.isDisplayed();}
 
 }
