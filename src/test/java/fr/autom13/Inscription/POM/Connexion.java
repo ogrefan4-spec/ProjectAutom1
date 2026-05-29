@@ -67,6 +67,7 @@ public class Connexion {
         return this;
     }
 
+
     /***
      * Tente une connexion avec des identifiants invalides.
      * Reste sur la LoginPage (pas de redirection).

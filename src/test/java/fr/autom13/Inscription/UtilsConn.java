@@ -28,23 +28,4 @@ public class UtilsConn {
         element.clear();
         element.sendKeys(value);
     }
-
-    static String getEmailFromExcel(int rowIndex) {
-        try (FileInputStream fis = new FileInputStream(DEFAULT_EXCEL_PATH);
-             Workbook workbook = new XSSFWorkbook(fis)) {
-
-            Sheet sheet = workbook.getSheetAt(0);
-            Row row = sheet.getRow(rowIndex + 1); // +1 pour sauter l'en-tête
-
-            if (row == null) {
-                throw new IllegalArgumentException("Aucune donnée à la ligne " + rowIndex);
-            }
-
-            DataFormatter formatter = new DataFormatter();
-            return formatter.formatCellValue(row.getCell(10)).trim();
-
-        } catch (IOException e) {
-            throw new RuntimeException("Impossible de lire l'email depuis l'Excel", e);
-        }
-    }
 }
